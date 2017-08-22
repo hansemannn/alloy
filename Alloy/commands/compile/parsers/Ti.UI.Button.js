@@ -32,7 +32,7 @@ function parse(node, state, args) {
 	}
 
 	var systemButton = node.getAttribute('systemButton');
-	if (_.contains(systemButtons, systemButton)) {
+	if (_.includes(systemButtons, systemButton)) {
 		node.setAttribute('systemButton', 'Ti.UI.' + iOSProxy + '.SystemButton.' + systemButton);
 	}
 

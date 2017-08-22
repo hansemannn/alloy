@@ -130,7 +130,7 @@ describe('optimizer.js', function() {
 						var passFor = test[2];
 						var expected = _.template(test[1], platforms[platform]);
 
-						if (!passFor || _.contains(passFor, platform)) {
+						if (!passFor || _.includes(passFor, platform)) {
 							expect(code).toBe(expected);
 						} else {
 							expect(code).not.toBe(expected);

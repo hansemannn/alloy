@@ -41,7 +41,7 @@ function parse(node, state, args) {
 		});
 
 		// process item arrays if present
-		var theNode = CU.validateNodeName(child, _.pluck(def.children, 'name'));
+		var theNode = CU.validateNodeName(child, _.map(def.children, 'name'));
 		if (_.find(def.children, function(c) { return c.name === theNode; })) {
 			var childState = {
 				parent: {},

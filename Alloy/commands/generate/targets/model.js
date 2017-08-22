@@ -27,7 +27,7 @@ module.exports = function(name, args, program) {
 		U.die(['`alloy generate model` requires a type and list of columns', USAGE]);
 	} else {
 		adapter = args[0];
-		if (!_.contains(VALID_ADAPTERS, adapter)) {
+		if (!_.includes(VALID_ADAPTERS, adapter)) {
 			U.die([
 				'Invalid adapter type "' + adapter + '".',
 				'Must be one of the following: [' + VALID_ADAPTERS.join(',') + ']',

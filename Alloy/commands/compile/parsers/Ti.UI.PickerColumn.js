@@ -28,14 +28,14 @@ function parse(node, state, args) {
 	// iterate through all children
 	_.each(U.XML.getElementsFromNodes(node.childNodes), function(child) {
 		var theNode = CU.validateNodeName(child, ROWS),
-			isControllerNode = _.contains(CONST.CONTROLLER_NODES, CU.getNodeFullname(child));
+			isControllerNode = _.includes(CONST.CONTROLLER_NODES, CU.getNodeFullname(child));
 
 		// make sure it's a valid node
 		if (!theNode) {
 			U.dieWithNode(child, 'Ti.UI.PickerColumn child elements must be one of the following: [' + ROWS.join(',') + ']');
 
 		// handle rows
-		} else if (_.contains(ROWS, theNode) && !isControllerNode) {
+		} else if (_.includes(ROWS, theNode) && !isControllerNode) {
 			child.nodeName = 'PickerRow';
 		}
 

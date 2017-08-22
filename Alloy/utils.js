@@ -202,8 +202,8 @@ exports.updateFiles = function(srcDir, dstDir, opts) {
 		// make sure the file exists and that it is not filtered
 		if (!fs.existsSync(src) ||
 			(opts.filter && opts.filter.test(file)) ||
-			(opts.exceptions && _.contains(opts.exceptions, file)) ||
-			(opts.restrictionPath && !_.contains(opts.restrictionPath, src)) ) {
+			(opts.exceptions && _.includes(opts.exceptions, file)) ||
+			(opts.restrictionPath && !_.includes(opts.restrictionPath, src)) ) {
 			return;
 		}
 

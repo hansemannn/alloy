@@ -35,7 +35,7 @@ function generate(args, program) {
 	}
 
 	// validate the generate target
-	if (!_.contains(CONST.GENERATE_TARGETS, target)) {
+	if (!_.includes(CONST.GENERATE_TARGETS, target)) {
 		U.die(
 			'Invalid generate target "' + target + '"\n' +
 			'Must be one of the following: [' + CONST.GENERATE_TARGETS.join(',') + ']'

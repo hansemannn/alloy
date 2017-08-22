@@ -65,7 +65,7 @@ function parse(node, state, args) {
 			}
 
 		// Make sure the children match the parent
-		} else if (!_.contains(def.children, childArgs.fullname)) {
+		} else if (!_.includes(def.children, childArgs.fullname)) {
 			U.die('Invalid child of <' + node.nodeName + '> on line ' + child.lineNumber + ': ' + childArgs.fullname);
 		}
 	});

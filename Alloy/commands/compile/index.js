@@ -222,7 +222,7 @@ module.exports = function(args, program) {
 	U.copyFileSync(
 		path.join(
 			alloyRoot, 'lib', 'alloy', 'backbone',
-			(_.contains(CONST.SUPPORTED_BACKBONE_VERSIONS, compileConfig.backbone))
+			(_.includes(CONST.SUPPORTED_BACKBONE_VERSIONS, compileConfig.backbone))
 				? compileConfig.backbone
 				: CONST.DEFAULT_BACKBONE_VERSION,
 			'backbone.js'
@@ -234,7 +234,7 @@ module.exports = function(args, program) {
 	U.copyFileSync(
 		path.join(
 			alloyRoot, 'lib', 'alloy', 'lodash',
-			(_.contains(CONST.SUPPORTED_LODASH_VERSIONS, compileConfig.lodash))
+			(_.includes(CONST.SUPPORTED_LODASH_VERSIONS, compileConfig.lodash))
 				? compileConfig.lodash
 				: CONST.DEFAULT_LODASH_VERSION,
 			'lodash.js'
@@ -488,7 +488,7 @@ module.exports = function(args, program) {
 function generateAppJs(paths, compileConfig, restrictionPath, compilerMakeFile) {
 	var alloyJs = path.join(paths.app, 'alloy.js');
 
-	if (restrictionPath !== null && !_.contains(restrictionPath, path.join(paths.app, 'alloy.js')) ) {
+	if (restrictionPath !== null && !_.includes(restrictionPath, path.join(paths.app, 'alloy.js')) ) {
 		// skip alloy.js processing when filtering on another file
 		return;
 	}
@@ -543,7 +543,7 @@ function matchesRestriction(files, fileRestriction) {
 
 	_.each(files, function(file) {
 		if (typeof file === 'string') {
-			matches |= _.contains(fileRestriction, file);
+			matches |= _.includes(fileRestriction, file);
 		} else if (typeof file === 'object') {
 			// platform-specific TSS files result in an object
 			// with a property of platform === true which needs
@@ -751,13 +751,13 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 				if (args.fullname === 'Alloy.Require') {
 					var inspect = CU.inspectRequireNode(node);
 					for (var j = 0; j < inspect.names.length; j++) {
-						if (!_.contains(valid, inspect.names[j])) {
+						if (!_.includes(valid, inspect.names[j])) {
 							found = false;
 							break;
 						}
 					}
 				} else {
-					found = _.contains(valid, args.fullname);
+					found = _.includes(valid, args.fullname);
 				}
 
 				if (!found) {
@@ -772,7 +772,7 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 		// process any model/collection nodes
 		_.each(rootChildren, function(node, i) {
 			var fullname = CU.getNodeFullname(node);
-			var isModelElement = _.contains(CONST.MODEL_ELEMENTS, fullname);
+			var isModelElement = _.includes(CONST.MODEL_ELEMENTS, fullname);
 
 			if (isModelElement) {
 				var vCode = CU.generateNode(node, state, undefined, false, true);
@@ -946,7 +946,7 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 
 		// make sure this style entry applies to the current platform
 		if (s && s.queries && s.queries.platform &&
-			!_.contains(s.queries.platform, buildPlatform)) {
+			!_.includes(s.queries.platform, buildPlatform)) {
 			return;
 		}
 
