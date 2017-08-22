@@ -10,7 +10,7 @@ var fs = require('fs'),
 	logger = require('../../logger'),
 	CONST = require('../../common/constants'),
 	U = require('../../utils'),
-	_ = require('../../lib/alloy/underscore');
+	_ = require('../../lib/alloy/lodash');
 
 var ALLOY_ROOT = path.join(__dirname, '..', '..');
 

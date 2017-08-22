@@ -1,6 +1,6 @@
 var styler = require('../styler'),
 	CU = require('../compilerUtils'),
-	_ = require('../../../lib/alloy/underscore');
+	_ = require('../../../lib/alloy/lodash');
 
 exports.parse = function(node, state) {
 	return require('./base').parse(node, state, parse);

@@ -3,7 +3,7 @@ var path = require('path'),
 	CU = require('../compilerUtils'),
 	U = require('../../../utils'),
 	CONST = require('../../../common/constants'),
-	_ = require('../../../lib/alloy/underscore')._,
+	_ = require('../../../lib/alloy/lodash')._,
 	logger = require('../../../logger');
 
 exports.parse = function(node, state) {

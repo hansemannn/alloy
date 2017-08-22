@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	os = require('os'),
 	U = require('../Alloy/utils'),
-	_ = require('../Alloy/lib/alloy/underscore')._,
+	_ = require('../Alloy/lib/alloy/lodash')._,
 	CONST = require('../Alloy/common/constants'),
 	logger = require('../Alloy/logger');
 

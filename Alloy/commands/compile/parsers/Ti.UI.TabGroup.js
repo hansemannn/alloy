@@ -1,4 +1,4 @@
-var _ = require('../../../lib/alloy/underscore')._,
+var _ = require('../../../lib/alloy/lodash')._,
 	U = require('../../../utils'),
 	tiapp = require('../../../tiapp'),
 	CU = require('../compilerUtils'),

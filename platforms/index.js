@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	path = require('path'),
-	_ = require('../Alloy/lib/alloy/underscore')._;
+	_ = require('../Alloy/lib/alloy/lodash')._;
 
 module.exports = (function() {
 	var obj = {};

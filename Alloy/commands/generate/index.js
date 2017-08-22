@@ -5,7 +5,7 @@
 	Actual component generators are defined in the targets folder
 */
 var path = require('path'),
-	_ = require('../../lib/alloy/underscore')._,
+	_ = require('../../lib/alloy/lodash')._,
 	U = require('../../utils'),
 	CONST = require('../../common/constants');
 

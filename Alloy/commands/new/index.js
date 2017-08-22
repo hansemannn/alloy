@@ -9,7 +9,7 @@
 var path = require('path'),
 	fs = require('fs'),
 	wrench = require('wrench'),
-	_ = require('../../lib/alloy/underscore')._,
+	_ = require('../../lib/alloy/lodash')._,
 	U = require('../../utils'),
 	CONST = require('../../common/constants'),
 	logger = require('../../logger');

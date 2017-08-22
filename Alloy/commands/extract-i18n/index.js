@@ -7,7 +7,7 @@ var fs = require('fs'),
 	wrench = require('wrench'),
 	CONST = require('../../common/constants'),
 	U = require('../../utils'),
-	_ = require('../../lib/alloy/underscore')._,
+	_ = require('../../lib/alloy/lodash')._,
 	logger = require('../../logger'),
 	i18nHandler = require('./i18nHandler');
 

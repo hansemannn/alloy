@@ -3,7 +3,7 @@ var path = require('path'),
 	wrench = require('wrench'),
 	jsonlint = require('jsonlint'),
 	U = require('../../../utils'),
-	_ = require('../../../lib/alloy/underscore')._,
+	_ = require('../../../lib/alloy/lodash')._,
 	CONST = require('../../../common/constants'),
 	logger = require('../../../logger');
 

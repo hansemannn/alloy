@@ -1,4 +1,4 @@
-var _ = require('../Alloy/lib/alloy/underscore')._,
+var _ = require('../Alloy/lib/alloy/lodash')._,
 	U = require('../Alloy/utils');
 
 module.exports = function(def) {

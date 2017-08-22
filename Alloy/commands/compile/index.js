@@ -8,7 +8,7 @@ var ejs = require('ejs'),
 	deasync = require('deasync'),
 
 	// alloy requires
-	_ = require('../../lib/alloy/underscore'),
+	_ = require('../../lib/alloy/lodash'),
 	logger = require('../../logger'),
 	U = require('../../utils'),
 	tiapp = require('../../tiapp'),

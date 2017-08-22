@@ -4,7 +4,7 @@
 var fs = require('fs'),
 	path = require('path'),
 	spawn = require('child_process').spawn,
-	_ = require('../../lib/alloy/underscore')._,
+	_ = require('../../lib/alloy/lodash')._,
 	U = require('../../utils'),
 	logger = require('../../logger');
 

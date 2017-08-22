@@ -11,7 +11,7 @@ var SM = require('source-map'),
 	babylon = require('babylon'),
 	babel = require('babel-core'),
 	logger = require('../../logger'),
-	_ = require('../../lib/alloy/underscore')._;
+	_ = require('../../lib/alloy/lodash')._;
 
 var lineSplitter = /(?:\r\n|\r|\n)/;
 

@@ -6,7 +6,7 @@ var fs = require('fs'),
 	exec = require('child_process').exec,
 	TU = require('../lib/testUtils'),
 	CONST = require('../../Alloy/common/constants'),
-	_ = require('../../Alloy/lib/alloy/underscore')._,
+	_ = require('../../Alloy/lib/alloy/lodash')._,
 	tiapp = require('../../Alloy/tiapp'),
 	platforms = require('../../platforms/index'),
 	sep = process.platform !== 'win32' ? '/' : '\\';

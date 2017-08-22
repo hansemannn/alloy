@@ -1,10 +1,10 @@
 var path = require('path'),
 	fs = require('fs'),
-	_ = require('../../../lib/alloy/underscore')._,
+	_ = require('../../../lib/alloy/lodash')._,
 	logger = require('../../../logger'),
 	U = require('../../../utils');
 
-var EXCLUDE = ['backbone', 'CFG', 'underscore'];
+var EXCLUDE = ['backbone', 'CFG', 'lodash', 'underscore'];
 var BUILTINS_PATH = path.join(__dirname, '..', '..', '..', 'builtins');
 var loaded = [];
 

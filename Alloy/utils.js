@@ -13,7 +13,7 @@ var path = require('path'),
 	tiapp = require('./tiapp'),
 	XMLSerializer = require('xmldom').XMLSerializer,
 	DOMParser = require('xmldom').DOMParser,
-	_ = require('./lib/alloy/underscore')._,
+	_ = require('./lib/alloy/lodash')._,
 	CONST = require('./common/constants'),
 	sourceMapper = require('./commands/compile/sourceMapper');
 

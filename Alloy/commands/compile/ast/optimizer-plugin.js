@@ -1,5 +1,5 @@
 var CONST = require('../../../common/constants'),
-	_ = require('../../../lib/alloy/underscore')._,
+	_ = require('../../../lib/alloy/lodash')._,
 	path = require('path'),
 	fs = require('fs');
 

@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	path = require('path'),
-	_ = require('../../lib/alloy/underscore')._,
+	_ = require('../../lib/alloy/lodash')._,
 	U = require('../../utils'),
 	CU = require('./compilerUtils'),
 	optimizer = require('./optimizer'),

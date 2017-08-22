@@ -7,7 +7,7 @@ var fs = require('fs'),
 	U = require('../../Alloy/utils'),
 	CU = require('../../Alloy/commands/compile/compilerUtils'),
 	CONST = require('../../Alloy/common/constants'),
-	_ = require('../../Alloy/lib/alloy/underscore')._;
+	_ = require('../../Alloy/lib/alloy/lodash')._;
 
 var alloyRoot = path.join(__dirname,'..','..');
 var templatePath = path.join(alloyRoot,'Alloy','template');

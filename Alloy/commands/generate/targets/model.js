@@ -3,7 +3,7 @@ var path = require('path'),
 	wrench = require('wrench'),
 	U = require('../../../utils'),
 	CONST = require('../../../common/constants'),
-	_ = require('../../../lib/alloy/underscore')._,
+	_ = require('../../../lib/alloy/lodash')._,
 	logger = require('../../../logger');
 
 var ALLOY_ROOT = path.join(__dirname, '..', '..', '..'),
