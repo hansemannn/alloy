@@ -71,6 +71,13 @@ exports.MODEL_ELEMENTS = ['Alloy.Collection', 'Alloy.Model'];
 exports.MODEL_BINDING_EVENTS = 'fetch change destroy';
 exports.COLLECTION_BINDING_EVENTS = 'fetch destroy change add remove reset';
 
+// Constants for properties shared between ActionBar and Toolbar on Android
+exports.BACKGROUND_IMAGE = 'backgroundImage';
+exports.DISPLAY_HOME_AS_UP = 'displayHomeAsUp';
+exports.HOME_BUTTON_ENABLED = 'homeButtonEnabled';
+exports.NAVIGATION_MODE = 'navigationMode';
+exports.ON_HOME_ICON_ITEM_SELECTED = 'onHomeIconItemSelected';
+
 // Listings for supported platforms and commands
 exports.INSTALL_TYPES = ['plugin'];
 exports.GENERATE_TARGETS = ['controller', 'jmk', 'model', 'migration', 'view', 'widget', 'style'];
@@ -203,7 +210,6 @@ exports.IMPLICIT_NAMESPACES = {
 	NavigationWindow: NS_TI_UI_IOS,
 	SplitWindow: NS_TI_UI_IOS,
 	TabbedBar: NS_TI_UI_IOS,
-	Toolbar: NS_TI_UI_IOS,
 	PreviewContext: NS_TI_UI_IOS,
 	PreviewAction: NS_TI_UI_IOS,
 	PreviewActionGroup: NS_TI_UI_IOS,
@@ -234,6 +240,11 @@ exports.IMPLICIT_NAMESPACES = {
 
 	// Ti.UI.iPad.Popover
 	ContentView: 'Ti.UI.iPad.Popover',
+
+	DrawerLayout: 'Ti.UI.Android',
+	LeftView: 'Ti.UI.Android.DrawerLayout',
+	CenterView: 'Ti.UI.Android.DrawerLayout',
+	RightView: 'Ti.UI.Android.DrawerLayout',
 
 	// Table and List proxy properties
 	FooterView: '_ProxyProperty._Lists',

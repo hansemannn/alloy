@@ -1,7 +1,8 @@
 var ejs = require('ejs'),
 	path = require('path'),
-	fs = require('fs'),
-	wrench = require('wrench'),
+	fs = require('fs-extra'),
+	walkSync = require('walk-sync'),
+	chmodr = require('chmodr'),
 	vm = require('vm'),
 	babel = require('babel-core'),
 	async = require('async'),
@@ -266,7 +267,8 @@ module.exports = function(args, program) {
 	// create runtime folder structure for alloy
 	_.each(['COMPONENT', 'WIDGET', 'RUNTIME_STYLE'], function(type) {
 		var p = path.join(paths.resources, titaniumFolder, 'alloy', CONST.DIR[type]);
-		wrench.mkdirSyncRecursive(p, 0755);
+		fs.mkdirpSync(p);
+		chmodr.sync(p, 0755);
 	});
 
 	// Copy in all developer assets, libs, and additional resources
@@ -297,6 +299,8 @@ module.exports = function(args, program) {
 		);
 	}
 
+	var defaultIcons = ['DefaultIcon.png', 'DefaultIcon-' + buildPlatform + '.png'];
+
 	// check theme for assets
 	if (theme) {
 		_.each(['ASSETS', 'LIB', 'VENDOR'], function(type) {
@@ -316,6 +320,37 @@ module.exports = function(args, program) {
 				);
 			}
 		});
+
+		// This is not ideal, but until the build system allows icons to be picked up in another location,
+		// we need to do this for now.
+		defaultIcons.forEach(function (file) {
+			var themeIconFile = path.join(paths.app, 'themes', theme, file);
+			var projectIconFile = path.join(paths.project, file);
+			var appcDirIconFile = path.join(paths.app, file);
+
+			if (fs.existsSync(themeIconFile)) {
+				if (fs.existsSync(projectIconFile) && !fs.existsSync(appcDirIconFile)) {
+					// 1st time theming defaulticon, copy icon file from root to app dir
+					logger.debug('Use themed DefaultIcon, make a copy of the DefaultIcon file in app folder.');
+					logger.debug('Moving ' + projectIconFile.yellow + ' --> ' + appcDirIconFile.yellow);
+					U.copyFileSync(projectIconFile, appcDirIconFile);
+				}
+
+				logger.debug('Use themed DefaultIcon.');
+				logger.debug('Copying ' + themeIconFile.yellow + ' --> ' + projectIconFile.yellow);
+				fs.copySync(themeIconFile, projectIconFile, { preserveTimestamps: true });
+			}
+		});
+
+	} else {
+		defaultIcons.forEach(function (file) {
+			var src = path.join(paths.app, file);
+			var dest = path.join(paths.project, file);
+			if (fs.existsSync(src))  {
+				logger.debug('Copying ' + src.yellow + ' --> ' + dest.yellow);
+				fs.copySync(src, dest, { preserveTimestamps: true });
+			}
+		});
 	}
 
 	function generateMessage(dir) {
@@ -331,16 +366,17 @@ module.exports = function(args, program) {
 		var iPhonePlatformDir = path.join(paths.project, 'platform', 'iphone');
 		if (fs.existsSync(iPhonePlatformDir)) {
 			logger.trace('Deleting ' + iPhonePlatformDir.yellow);
-			wrench.rmdirSyncRecursive(iPhonePlatformDir);
+			fs.removeSync(iPhonePlatformDir);
 		}
 	} else {
 		sourcePlatformDirs = [ 'platform/' + buildPlatform ];
 	}
 	if (fs.existsSync(destPlatformDir)) {
 		logger.debug('Resetting ' + destPlatformDir.yellow);
-		wrench.rmdirSyncRecursive(destPlatformDir);
+		fs.removeSync(destPlatformDir);
 	}
-	wrench.mkdirSyncRecursive(destPlatformDir, 0755);
+	fs.mkdirpSync(destPlatformDir);
+	chmodr.sync(destPlatformDir, 0755);
 	fs.writeFileSync(path.join(destPlatformDir, 'alloy_generated'), generateMessage('platform'));
 	sourcePlatformDirs.forEach(function (dir) {
 		var dirs = [ dir ];
@@ -349,7 +385,7 @@ module.exports = function(args, program) {
 			dir = path.join(paths.app, dir);
 			if (fs.existsSync(dir)) {
 				logger.debug('Copying ' + dir.yellow + ' --> ' + destPlatformDir.yellow);
-				wrench.copyDirSyncRecursive(dir, destPlatformDir, { preserve: true });
+				fs.copySync(dir, destPlatformDir, { preserveTimestamps: true });
 			}
 		});
 	});
@@ -362,9 +398,10 @@ module.exports = function(args, program) {
 	}
 	if (fs.existsSync(destI18NDir)) {
 		logger.debug('Resetting ' + destI18NDir.yellow);
-		wrench.rmdirSyncRecursive(destI18NDir);
+		fs.removeSync(destI18NDir);
 	}
-	wrench.mkdirSyncRecursive(destI18NDir, 0755);
+	fs.mkdirpSync(destI18NDir);
+	chmodr.sync(destI18NDir, 0755);
 	fs.writeFileSync(path.join(destI18NDir, 'alloy_generated'), generateMessage('i18n'));
 	sourceI18NPaths.forEach(function (dir) {
 		if (fs.existsSync(dir)) {
@@ -412,7 +449,7 @@ module.exports = function(args, program) {
 		// generate runtime controllers from views
 		var theViewDir = path.join(collection.dir, CONST.DIR.VIEW);
 		if (fs.existsSync(theViewDir)) {
-			_.each(wrench.readdirSyncRecursive(theViewDir), function(view) {
+			_.each(walkSync(theViewDir), function(view) {
 				if (viewRegex.test(view) && filterRegex.test(view) && !excludeRegex.test(view)) {
 					// make sure this controller is only generated once
 					var theFile = view.substring(0, view.lastIndexOf('.'));
@@ -433,7 +470,7 @@ module.exports = function(args, program) {
 		// corresponding view markup
 		var theControllerDir = path.join(collection.dir, CONST.DIR.CONTROLLER);
 		if (fs.existsSync(theControllerDir)) {
-			_.each(wrench.readdirSyncRecursive(theControllerDir), function(controller) {
+			_.each(walkSync(theControllerDir), function(controller) {
 				if (controllerRegex.test(controller) && filterRegex.test(controller) && !excludeRegex.test(controller)) {
 					// make sure this controller is only generated once
 					var theFile = controller.substring(0, controller.lastIndexOf('.'));
@@ -585,7 +622,8 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 				fs.readFileSync(path.join(alloyRoot, 'template', 'wpath.js'), 'utf8'),
 				{ WIDGETID: manifest.id }
 			),
-			__MAPMARKER_CONTROLLER_CODE__: ''
+			__MAPMARKER_CONTROLLER_CODE__: '',
+			ES6Mod: ''
 		},
 		widgetDir = dirname ? path.join(CONST.DIR.COMPONENT, dirname) : CONST.DIR.COMPONENT,
 		widgetStyleDir = dirname ? path.join(CONST.DIR.RUNTIME_STYLE, dirname) :
@@ -813,6 +851,7 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 		cCode.parentControllerName : CU[CONST.DOCROOT_BASECONTROLLER_PROPERTY] || "'BaseController'";
 	template.__MAPMARKER_CONTROLLER_CODE__ += cCode.controller;
 	template.preCode += cCode.pre;
+	template.ES6Mod += cCode.es6mods;
 
 	// for each model variable in the bindings map...
 	_.each(styler.bindingsMap, function(mapping, modelVar) {
@@ -879,16 +918,18 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 	var runtimeStylePath = path.join(compileConfig.dir.resources, titaniumFolder,
 		path.relative(compileConfig.dir.resources, files.RUNTIME_STYLE));
 	if (manifest) {
-		wrench.mkdirSyncRecursive(
+		fs.mkdirpSync(
 			path.join(compileConfig.dir.resources, titaniumFolder, 'alloy', CONST.DIR.WIDGET,
-				manifest.id, widgetDir),
-			0755
+				manifest.id, widgetDir)
 		);
-		wrench.mkdirSyncRecursive(
+		chmodr.sync(path.join(compileConfig.dir.resources, titaniumFolder, 'alloy', CONST.DIR.WIDGET,
+			manifest.id, widgetDir), 0755);
+		fs.mkdirpSync(
 			path.join(compileConfig.dir.resources, titaniumFolder, 'alloy', CONST.DIR.WIDGET,
-				manifest.id, widgetStyleDir),
-			0755
+				manifest.id, widgetStyleDir)
 		);
+		chmodr.sync(path.join(compileConfig.dir.resources, titaniumFolder, 'alloy', CONST.DIR.WIDGET,
+			manifest.id, widgetStyleDir), 0755);
 
 		// [ALOY-967] merge "i18n" dir in widget folder
 		CU.mergeI18N(path.join(dir, 'i18n'), path.join(compileConfig.dir.project, 'i18n'), { override: false });
@@ -994,7 +1035,8 @@ function parseAlloyComponent(view, dir, manifest, noView, fileRestriction) {
 			{ WIDGETID: manifest.id }
 		);
 	}
-	wrench.mkdirSyncRecursive(path.dirname(runtimeStylePath), 0755);
+	fs.mkdirpSync(path.dirname(runtimeStylePath));
+	chmodr.sync(path.dirname(runtimeStylePath), 0755);
 	fs.writeFileSync(runtimeStylePath, styleCode);
 }
 
@@ -1073,7 +1115,8 @@ function processModels(dirs) {
 				modelRuntimeDir = path.join(compileConfig.dir.resources,
 					titaniumFolder, 'alloy', 'widgets', manifest.id, 'models');
 			}
-			wrench.mkdirSyncRecursive(modelRuntimeDir, 0755);
+			fs.mkdirpSync(modelRuntimeDir);
+			chmodr.sync(modelRuntimeDir, 0755);
 			fs.writeFileSync(path.join(modelRuntimeDir, casedBasename + '.js'), code);
 			models.push(casedBasename);
 		});
@@ -1128,7 +1171,7 @@ function optimizeCompiledCode(alloyConfig, paths) {
 
 		var excludePatterns = otherPlatforms.concat(['.+node_modules']);
 		var rx = new RegExp('^(?!' + excludePatterns.join('|') + ').+\\.js$');
-		return _.filter(wrench.readdirSyncRecursive(compileConfig.dir.resources), function(f) {
+		return _.filter(walkSync(compileConfig.dir.resources), function(f) {
 			return rx.test(f) && !_.find(exceptions, function(e) {
 				return f.indexOf(e) === 0;
 			}) && !fs.statSync(path.join(compileConfig.dir.resources, f)).isDirectory();
