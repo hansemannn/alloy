@@ -115,8 +115,8 @@ module.exports = function(args, program) {
 	// if creating from one of the test apps...
 	if (program.testapp) {
 		// remove _generated folder,
-		// TODO: once we update wrench (ALOY-1001), add an exclude regex to the
-		// copyDirSynRecursive() statements above rather than deleting the folder here
+		// TODO: Add an exclude regex to the copyDirSyncRecursive() statements above
+		// rather than deleting the folder here
 		fs.removeSync(path.join(paths.app, '_generated'));
 		if (fs.existsSync(path.join(sampleAppsDir, program.testapp, 'specs'))) {
 			// copy in the test harness
